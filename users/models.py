@@ -19,8 +19,8 @@ class Empresa(models.Model):
         CHILE: "Chile",
     }
 
-    direccion_validator = RegexValidator(regex=r'^[a-zA-Z0-9!@#$&()\\-`.+,/\]*$', message="Direccion", code="invalid_address")
-    web_validator = RegexValidator(regex=r'^[a-zA-Z0-9!@#$&()\\-`.+,/\]*$', message="Web", code="invalid_web_address")
+    direccion_validator = RegexValidator(regex=r'^[a-zA-Z0-9!@#$&()\(\)\(/)]', message="Direccion", code="invalid_address")
+    web_validator = RegexValidator(regex=r'^[a-zA-Z0-9!@#$&()\(\)\(/)]', message="Web", code="invalid_web_address")
 
     ruc = models.BigIntegerField()
     razon_social = models.CharField(max_length=100)
@@ -30,6 +30,8 @@ class Empresa(models.Model):
     email = models.EmailField(max_length=254)
     web = models.CharField(max_length=100, validators=[web_validator])
     descripcion = models.TextField(max_length=220)
+    def __str__(self):
+        return self.razon_social
 
 
 class CustomUser(AbstractUser):
@@ -47,3 +49,12 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email
 # Create your models here.
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"

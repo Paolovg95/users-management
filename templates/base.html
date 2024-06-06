@@ -1,0 +1,17 @@
+<!-- RiffMates/templates/base.html -->
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <title>
+    {% block title %}Users Management{% endblock title %}
+  </title>
+</head>
+
+<body>
+  <div>
+    {% block content %}
+    {% endblock content %}
+  </div>
+</body>
+</html>

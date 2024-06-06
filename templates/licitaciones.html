@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{block.super}}: {{title}}
+{% endblock %}
+
+{% block content %}
+<ul>
+  {% for lic in licitaciones %}
+    {% if user.userprofile.empresa == lic.empresa or user.is_superuser %}
+      <a href="{% url 'mi-licitacion' lic.id %}">{{ lic.titulo }}</a>
+    {% else %}
+      <p>{{ lic.titulo }}</p>
+    {% endif %}
+    {% for item in lic.licitacionitem_set.all %}
+    <li>
+      {{ item.nombre }}: {{ item.price }}
+    </li>
+    {% endfor %}
+  {% endfor %}
+</ul>
+{% endblock content %}

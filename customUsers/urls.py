@@ -14,8 +14,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from users.views import restricted_page
+from licitaciones import views as lic_views
+from ofertas import views as offer_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('restricted/', restricted_page),
+    path('licitaciones/', lic_views.view_all_licitaciones),
+    path('licitaciones/mi-lista/', lic_views.view_my_licitaciones ),
+    path('licitacion/<int:id>/', lic_views.view_licitacion, name='mi-licitacion'),
+    path('ofertar/', offer_views.create_offer),
+    path('accounts/', include('django.contrib.auth.urls')),
+
 ]

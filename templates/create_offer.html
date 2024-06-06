@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{block.super}}: {{title}}
+{% endblock %}
+
+
+{% block content %}
+<!-- <input readonly="true" type="text" value="{{ licitacion.titulo }} - {{ licitacion.id }}"> -->
+<input readonly="true" type="text" value="{{ user.user_profile.empresa }}">
+<input readonly="true" type="text" value="{{ user.email }}">
+
+{{ offer_form.as_p }}
+{% for form in offer_formset %}
+{{ form.as_p }}
+{% endfor %}
+
+{% endblock content %}
+
+<!-- <select name="cars" id="cars">
+  {% for item in licitacion.licitacionitem_set.all %}
+    <option value="{{ item }}">{{ item }}</option>
+  {% endfor %}
+</select> -->
