@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'licitaciones',
-    'ofertas'
+    'ofertas',
+    'compressor'
 ]
 
 AUTH_USER_MODEL = "users.CustomUser"
@@ -134,3 +135,9 @@ PAISES = [
     ("UR", "URUGUAY"),
     ("CH", "CHILE"),
 ]
+
+COMPRESS_ROOT = BASE_DIR / 'static'
+
+COMPRESS_ENABLED = True
+
+STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)

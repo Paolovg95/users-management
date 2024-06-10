@@ -5,18 +5,13 @@
 {% endblock %}
 
 {% block content %}
-<ul>
-  {% for lic in licitaciones %}
-    {% if perms.licitaciones.can_view_all_licitaciones %}
-      <a href="{% url 'mi-licitacion' lic.id %}">{{ lic.titulo }}</a>
-    {% else %}
-      <p>{{ lic.titulo }}</p>
-    {% endif %}
-    {% for item in lic.licitacionitem_set.all %}
-    <li>
-      {{ item.nombre }}: {{ item.price }}
-    </li>
+<div class="m-5">
+  <ol>
+    {% for lic in licitaciones %}
+      <li>
+        <a class="text-blue-600 dark:text-blue-500 hover:underline" href="{% url 'mi-licitacion' lic.id %}">{{ lic.titulo }}</a>
+      </li>
     {% endfor %}
-  {% endfor %}
-</ul>
+  </ol>
+</div>
 {% endblock content %}

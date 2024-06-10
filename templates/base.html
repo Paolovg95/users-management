@@ -1,4 +1,4 @@
-<!-- RiffMates/templates/base.html -->
+{% load compress %}
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -6,10 +6,12 @@
   <title>
     {% block title %}Users Management{% endblock title %}
   </title>
+  {% compress css %}
+    <link rel="stylesheet" href="{% static 'src/output.css' %}">
+  {% endcompress %}
 </head>
 
 <body>
-  <div>
     {% block content %}
     {% endblock content %}
   </div>
