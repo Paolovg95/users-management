@@ -4,7 +4,6 @@ from .models import Licitacion
 # Create your views here.
 
 @login_required
-@permission_required("licitaciones.view_licitacion")
 # EVENTUALLY ---> READ + UPDATE USING HTMX
 def view_my_licitaciones(request):
     # OLP w/ Django-Guardian vs Object specific Query
@@ -14,7 +13,7 @@ def view_my_licitaciones(request):
         'licitaciones': licitaciones
     }
 
-    return render(request, 'mi-listado.html', context)
+    return render(request, 'read_my_licitaciones.html', context)
 
 @login_required # This permission allows only subscribed users to see
 def view_all_licitaciones(request):
@@ -23,16 +22,21 @@ def view_all_licitaciones(request):
         'title': 'Licitaciones',
         'licitaciones': licitaciones
     }
-    return render(request, "licitaciones.html", context)
+    return render(request, "read_licitaciones.html", context)
 
 @login_required
-@permission_required("licitaciones.view_licitacion")
 def view_licitacion(request, id=None):
+    data = {}
+    user = request.user
     if id != None:
         licitacion = Licitacion.objects.get(id=id)
-        ofertas = licitacion.oferta_set.all()
-        data = {
-            'licitacion': licitacion,
-            'ofertas': ofertas
-        }
-        return render(request, "mi_licitacion.html", data)
+        data['licitacion'] = licitacion
+        # SUPERUSER can see all the offers
+        if user.is_superuser:
+            ofertas = licitacion.oferta_set.all()
+            data['ofertas'] = ofertas
+        else:
+            oferta = licitacion.oferta_set.filter(empresa=user.userprofile.empresa).first()
+            if oferta:
+                data['oferta'] = oferta
+    return render(request, "read_licitacion_detail.html", data)

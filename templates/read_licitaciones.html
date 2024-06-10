@@ -7,7 +7,7 @@
 {% block content %}
 <ul>
   {% for lic in licitaciones %}
-    {% if user.userprofile.empresa == lic.empresa or user.is_superuser %}
+    {% if perms.licitaciones.can_view_all_licitaciones %}
       <a href="{% url 'mi-licitacion' lic.id %}">{{ lic.titulo }}</a>
     {% else %}
       <p>{{ lic.titulo }}</p>

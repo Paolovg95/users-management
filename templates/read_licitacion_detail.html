@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{block.super}}: {{title}}
+{% endblock %}
+
+{% block content %}
+<h1>Licitacion: {{ licitacion.titulo }}</h1>
+<ol>
+  {% for item in licitacion.licitacionitem_set.all %}
+    <li>
+      {{ item.nombre }}: {{ item.price }}
+    </li>
+  {% endfor %}
+</ol>
+{% if oferta %}
+  <h2>Ofertas</h2>
+  <h3>{{ oferta.owner }}</h3>
+  <h3>{{ oferta.empresa }}</h3>
+  <ol>
+    {% for licitacion_item in licitacion.licitacionitem_set.all %}
+      <li>
+        {% for oferta_item in oferta.ofertaitem_set.all %}
+          {% if licitacion_item == oferta_item.licitacion_item %}
+            <strong>{{ oferta_item.nombre }}: {{ oferta_item.price }}</strong>
+            {{ licitacion_item.nombre }}: {{ licitacion_item.price }}
+          {% endif %}
+        {% endfor %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% if ofertas %}
+  <h2>Ofertas</h2>
+  {% for oferta in ofertas %}
+    <h3>{{ oferta.owner }}</h3>
+    <h3>{{ oferta.empresa }}</h3>
+      <ul>
+        {% for oferta_item in oferta.ofertaitem_set.all %}
+          <li>
+            {{ oferta_item.licitacion_item.nombre }}
+          </li>
+          <li>
+            {{ oferta_item.nombre }}
+          </li>
+        {% endfor %}
+      </ul>
+  {% endfor %}
+{% endif %}
+{% endblock content %}
