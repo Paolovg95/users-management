@@ -6,71 +6,95 @@
 
 {% block content %}
 <div class="m-5">
-
   <h3 class="text-3xl font-extrabold">Licitacion: {{ licitacion.titulo }}</h3>
+  <br>
+  <h4 class="text-2xl">Items solicitados: </h4>
   <ol class="m-3 list-decimal list-inside">
     {% for item in licitacion.licitacionitem_set.all %}
       <li>
-        <span class="font-semibold text-gray-900">{{ item.nombre }}:</span> {{ item.price }}
+        <span class="font-semibold text-gray-900">{{ item.nombre }}:</span> ${{ item.price }}
       </li>
     {% endfor %}
   </ol>
-  <p><strong>Ofertas: </strong>{{ licitacion.oferta_set.all|length }}</p>
+  <br>
+  <p><strong>Total Ofertas: </strong>{{ licitacion.oferta_set.all|length }}</p>
+  <br>
   {% if oferta %}
     <h3 class="text-3xl font-extrabold">Oferta</h3>
     <div class="p-5 border">
       <h4 class="text-2xl"><strong>{{ oferta.empresa }}</strong></h4>
       <h5 class="text-xl">Owner: <strong>{{ oferta.owner }}</strong></h5>
-      <ol class="m-3 list-decimal list-inside">
-        {% for licitacion_item in licitacion.licitacionitem_set.all %}
-          {% for oferta_item in oferta.ofertaitem_set.all %}
-            {% if licitacion_item == oferta_item.licitacion_item %}
-              <li>
-                {{ licitacion_item.nombre }}: <strong>{{ oferta_item.price }}</strong>
-              </li>
-            {% endif %}
+    </div>
+    <div class="relative overflow-x-auto">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Item name
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Offered
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Price
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for licitacion_item in licitacion.licitacionitem_set.all %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  {{licitacion_item.nombre}}
+              </th>
+              {% if licitacion_item.ofertaitem_set.all %}
+                <td class="px-6 py-4">
+                  ✅
+                </td>
+                <td class="px-6 py-4">
+                  <strong>$999999</strong>
+                </td>
+              {% else %}
+                <td class="px-6 py-4">
+                    X
+                </td>
+                <td class="px-6 py-4">
+                    -
+                </td>
+              {% endif %}
+              </td>
+            </tr>
           {% endfor %}
-        {% endfor %}
-      </ol>
+        </tbody>
+      </table>
     </div>
   {% endif %}
-    {% if ofertas %}
-    <h3 class="text-3xl font-extrabold">Ofertas</h3>
-    {% for oferta in ofertas %}
+
+  {% for oferta_item in oferta.ofertaitem_set.all %}
+
+  {% endfor %}
+  {% if ofertas %}
     <div class="p-5 border">
-      <h4 class="text-2xl"><strong>{{ oferta.empresa }}</strong></h4>
-      <h5 class="text-xl">Owner: <strong>{{ oferta.owner }}</strong></h5>
-        <ol class="m-3 list-decimal list-inside">
-          {% for oferta_item in oferta.ofertaitem_set.all %}
-            <li>
-              {{ oferta_item.licitacion_item.nombre }}
-              <strong>{{ oferta_item.price }}</strong>
-            </li>
-          {% endfor %}
-        </ol>
-    {% endfor %}
+      {% for oferta in ofertas %}
+        <h4 class="text-2xl"><strong>{{ oferta.empresa }}</strong></h4>
+        <h5 class="text-xl">Owner: <strong>{{ oferta.owner }}</strong></h5>
+      {% endfor %}
     </div>
   {% endif %}
 </div>
 
+
+
+
+
 <div x-data="{ open: false }">
   <h2>
     <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" x-on:click="open = ! open">
-      <span>What are the differences between Flowbite and Tailwind UI?</span>
-      <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
-      </svg>
+      Ver detalles
     </button>
   </h2>
   <div :class="open ? '' : 'hidden'">
     <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
       <p class="mb-2 text-gray-500 dark:text-gray-400">The main difference is that the core components from Flowbite are open source under the MIT license, whereas Tailwind UI is a paid product. Another difference is that Flowbite relies on smaller and standalone components, whereas Tailwind UI offers sections of pages.</p>
-      <p class="mb-2 text-gray-500 dark:text-gray-400">However, we actually recommend using both Flowbite, Flowbite Pro, and even Tailwind UI as there is no technical reason stopping you from using the best of two worlds.</p>
-      <p class="mb-2 text-gray-500 dark:text-gray-400">Learn more about these technologies:</p>
-      <ul class="ps-5 text-gray-500 list-disc dark:text-gray-400">
-        <li><a href="https://flowbite.com/pro/" class="text-blue-600 dark:text-blue-500 hover:underline">Flowbite Pro</a></li>
-        <li><a href="https://tailwindui.com/" rel="nofollow" class="text-blue-600 dark:text-blue-500 hover:underline">Tailwind UI</a></li>
-      </ul>
     </div>
   </div>
 </div>
