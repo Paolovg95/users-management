@@ -47,31 +47,24 @@
                   {{licitacion_item.nombre}}
               </th>
               {% if licitacion_item.ofertaitem_set.all %}
-                <td class="px-6 py-4">
-                  ✅
-                </td>
-                <td class="px-6 py-4">
-                  <strong>$999999</strong>
-                </td>
+                {% for licitacion_item_oferta in licitacion_item.ofertaitem_set.all %}
+                  {% for ofertaitem in oferta.ofertaitem_set.all %}
+                    {% if ofertaitem == licitacion_item_oferta %}
+                      <td class="px-6 py-3">✅</td>
+                      <td class="px-6 py-3"><strong>{{ ofertaitem.price }}</strong></td>
+                    {% endif %}
+                  {% endfor %}
+                {% endfor %}
               {% else %}
-                <td class="px-6 py-4">
-                    X
-                </td>
-                <td class="px-6 py-4">
-                    -
-                </td>
+                <td class="px-6 py-3">-</td>
+                <td class="px-6 py-3"><strong>-</strong></td>
               {% endif %}
-              </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   {% endif %}
-
-  {% for oferta_item in oferta.ofertaitem_set.all %}
-
-  {% endfor %}
   {% if ofertas %}
     <div class="p-5 border">
       {% for oferta in ofertas %}
