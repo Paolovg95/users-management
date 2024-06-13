@@ -10,4 +10,4 @@ class OfertaItemInline(admin.StackedInline):
 @admin.register(Oferta)
 class OfertaAdmin(admin.ModelAdmin):
     inlines = [OfertaItemInline]
-    list_display = ('licitacion', )
+    list_display = ('id', )

@@ -30,8 +30,11 @@ def view_licitacion(request, id=None):
     user = request.user
     if id != None:
         licitacion = Licitacion.objects.get(id=id)
+        items_solicitados = licitacion.licitacionitem_set.all()
         data['licitacion'] = licitacion
-        # SUPERUSER can see all the offers
+        data['items_solicitados'] = items_solicitados
+
+        # SUPERUSER or OWNER of Licitacion can see all the offers
         if user.is_superuser:
             ofertas = licitacion.oferta_set.all()
             data['ofertas'] = ofertas

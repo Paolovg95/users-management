@@ -50,8 +50,12 @@
                 {% for licitacion_item_oferta in licitacion_item.ofertaitem_set.all %}
                   {% for ofertaitem in oferta.ofertaitem_set.all %}
                     {% if ofertaitem == licitacion_item_oferta %}
-                      <td class="px-6 py-3">✅</td>
-                      <td class="px-6 py-3"><strong>{{ ofertaitem.price }}</strong></td>
+                      <td class="px-6 py-3">
+                        <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="green" viewBox="0 0 24 24">
+                          <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>
+                        </svg>
+                      </td>
+                      <td class="px-6 py-3 text-gray-900 font-extrabold">${{ ofertaitem.price }}</td>
                     {% endif %}
                   {% endfor %}
                 {% endfor %}
@@ -67,11 +71,48 @@
   {% endif %}
   {% if ofertas %}
     <div class="p-5 border">
-      {% for oferta in ofertas %}
-        <h4 class="text-2xl"><strong>{{ oferta.empresa }}</strong></h4>
-        <h5 class="text-xl">Owner: <strong>{{ oferta.owner }}</strong></h5>
-      {% endfor %}
+      <div class="relative overflow-x-auto">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" class="px-6 py-3">
+                  Items solicitados
+                </th>
+                {% for oferta in ofertas %}
+                  <th scope="col" class="px-6 py-3">
+                    {{ oferta.empresa }}
+                  </th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in items_solicitados %}
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ item.nombre }}
+                  </th>
+                    {% if item.ofertaitem_set.all|length == 0 %}
+                      <td class="px-6 py-3">
+                        <strong>None</strong>
+                      </td>
+                    {% else %}
+                    <td class="px-6 py-3">
+                      <strong>$$</strong>
+                    </td>
+                      <!-- {% for oferta_item in item.ofertaitem_set.all %}
+                        <td class="px-6 py-3">
+                          <strong>${{ oferta_item.price }}</strong>
+                        </td>
+                      {% endfor %} -->
+                    {% endif %}
+                </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+      </div>
     </div>
+
+
   {% endif %}
 </div>
 

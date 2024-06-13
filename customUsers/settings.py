@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'users',
     'licitaciones',
     'ofertas',
-    'compressor'
+    'compressor',
+    'django_extensions'
 ]
 
 AUTH_USER_MODEL = "users.CustomUser"
