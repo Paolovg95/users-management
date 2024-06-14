@@ -34,12 +34,15 @@ def view_licitacion(request, id=None):
         data['licitacion'] = licitacion
         data['items_solicitados'] = items_solicitados
 
-        # SUPERUSER or OWNER of Licitacion can see all the offers
+        # SUPERUSER or OWNER of LICITACION can see all the offers
         if user.is_superuser:
             ofertas = licitacion.oferta_set.all()
             data['ofertas'] = ofertas
         else:
             oferta = licitacion.oferta_set.filter(empresa=user.userprofile.empresa).first()
+
             if oferta:
+                oferta_items = oferta.ofertaitem_set.all()
                 data['oferta'] = oferta
+                data['oferta_items'] = oferta_items
     return render(request, "read_licitacion_detail.html", data)

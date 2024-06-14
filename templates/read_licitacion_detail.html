@@ -33,9 +33,6 @@
                     Item name
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Offered
-                </th>
-                <th scope="col" class="px-6 py-3">
                     Price
                 </th>
             </tr>
@@ -44,25 +41,13 @@
           {% for licitacion_item in licitacion.licitacionitem_set.all %}
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {{licitacion_item.nombre}}
+                  {{ licitacion_item.nombre}}
               </th>
-              {% if licitacion_item.ofertaitem_set.all %}
-                {% for licitacion_item_oferta in licitacion_item.ofertaitem_set.all %}
-                  {% for ofertaitem in oferta.ofertaitem_set.all %}
-                    {% if ofertaitem == licitacion_item_oferta %}
-                      <td class="px-6 py-3">
-                        <svg class="w-[48px] h-[48px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="green" viewBox="0 0 24 24">
-                          <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z" clip-rule="evenodd"/>
-                        </svg>
-                      </td>
-                      <td class="px-6 py-3 text-gray-900 font-extrabold">${{ ofertaitem.price }}</td>
-                    {% endif %}
-                  {% endfor %}
-                {% endfor %}
-              {% else %}
-                <td class="px-6 py-3">-</td>
-                <td class="px-6 py-3"><strong>-</strong></td>
-              {% endif %}
+              {% for oferta_item in oferta_items %}
+                {% if oferta_item.licitacion_item == licitacion_item %}
+                  <td>{{ oferta_item.price }}</td>
+                {% endif %}
+              {% endfor %}
             </tr>
           {% endfor %}
         </tbody>
@@ -91,48 +76,11 @@
                   <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {{ item.nombre }}
                   </th>
-                    {% if item.ofertaitem_set.all|length == 0 %}
-                      <td class="px-6 py-3">
-                        <strong>None</strong>
-                      </td>
-                    {% else %}
-                    <td class="px-6 py-3">
-                      <strong>$$</strong>
-                    </td>
-                      <!-- {% for oferta_item in item.ofertaitem_set.all %}
-                        <td class="px-6 py-3">
-                          <strong>${{ oferta_item.price }}</strong>
-                        </td>
-                      {% endfor %} -->
-                    {% endif %}
-                </tr>
               {% endfor %}
             </tbody>
         </table>
       </div>
     </div>
-
-
   {% endif %}
 </div>
-
-
-
-
-
-<div x-data="{ open: false }">
-  <h2>
-    <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-800 dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3" x-on:click="open = ! open">
-      Ver detalles
-    </button>
-  </h2>
-  <div :class="open ? '' : 'hidden'">
-    <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
-      <p class="mb-2 text-gray-500 dark:text-gray-400">The main difference is that the core components from Flowbite are open source under the MIT license, whereas Tailwind UI is a paid product. Another difference is that Flowbite relies on smaller and standalone components, whereas Tailwind UI offers sections of pages.</p>
-    </div>
-  </div>
-</div>
-
-
-
 {% endblock content %}
