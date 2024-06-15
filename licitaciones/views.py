@@ -32,17 +32,32 @@ def view_licitacion(request, id=None):
         licitacion = Licitacion.objects.get(id=id)
         items_solicitados = licitacion.licitacionitem_set.all()
         data['licitacion'] = licitacion
-        data['items_solicitados'] = items_solicitados
 
         # SUPERUSER or OWNER of LICITACION can see all the offers
-        if user.is_superuser:
+        if user.is_superuser or user == licitacion.owner:
+            data['items_solicitados'] = items_solicitados
             ofertas = licitacion.oferta_set.all()
-            data['ofertas'] = ofertas
-        else:
-            oferta = licitacion.oferta_set.filter(empresa=user.userprofile.empresa).first()
+            items_per_offer = {}
+            for oferta in ofertas:
+                items_per_offer[oferta] = {}
+                for item in items_solicitados:
+                    oferta_item = oferta.ofertaitem_set.filter(licitacion_item=item).select_related("licitacion_item")
+                    if oferta_item:
+                        items_per_offer[oferta].update({item.nombre:oferta_item[0].price})
+                    else:
+                        items_per_offer[oferta].update({item.nombre:None })
+                    # OFERTANTE of OFERTA only
+            data['items_per_offer'] = items_per_offer
 
+            oferta = licitacion.oferta_set.filter(empresa=user.userprofile.empresa).first()
             if oferta:
-                oferta_items = oferta.ofertaitem_set.all()
                 data['oferta'] = oferta
-                data['oferta_items'] = oferta_items
+                prices = {}
+                for licitacion_item in items_solicitados:
+                    oferta_item = oferta.ofertaitem_set.filter(licitacion_item=licitacion_item).select_related("licitacion_item")
+                    if oferta_item:
+                        prices[licitacion_item.nombre] = oferta_item[0].price
+                    else:
+                        prices[licitacion_item.nombre] = None
+                data['prices'] = prices
     return render(request, "read_licitacion_detail.html", data)

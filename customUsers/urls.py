@@ -27,5 +27,5 @@ urlpatterns = [
     path('licitacion/<int:id>/', lic_views.view_licitacion, name='mi-licitacion'),
     path('ofertar/', offer_views.create_offer),
     path('accounts/', include('django.contrib.auth.urls')),
-
+    path("__debug__/", include("debug_toolbar.urls")),
 ]

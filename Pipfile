@@ -8,6 +8,7 @@ django = "*"
 django-compressor = "*"
 django-extensions = "*"
 ipython = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
 

@@ -28,33 +28,31 @@
     <div class="relative overflow-x-auto">
       <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Item name
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Price
-                </th>
-            </tr>
+          <tr>
+              <th scope="col" class="px-6 py-3">
+                  Item name
+              </th>
+              <th scope="col" class="px-6 py-3">
+                  Price
+              </th>
+          </tr>
         </thead>
         <tbody>
-          {% for licitacion_item in licitacion.licitacionitem_set.all %}
+          {% for key, value  in prices.items %}
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
               <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {{ licitacion_item.nombre}}
+                  {{ key }}
               </th>
-              {% for oferta_item in oferta_items %}
-                {% if oferta_item.licitacion_item == licitacion_item %}
-                  <td>{{ oferta_item.price }}</td>
-                {% endif %}
-              {% endfor %}
+              <td>
+                {{ value }}
+              </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
   {% endif %}
-  {% if ofertas %}
+  {% if items_per_offer %}
     <div class="p-5 border">
       <div class="relative overflow-x-auto">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -63,19 +61,25 @@
                 <th scope="col" class="px-6 py-3">
                   Items solicitados
                 </th>
-                {% for oferta in ofertas %}
+                {% for key in items_per_offer %}
                   <th scope="col" class="px-6 py-3">
-                    {{ oferta.empresa }}
+                    {{ key.empresa }}
                   </th>
                 {% endfor %}
               </tr>
             </thead>
             <tbody>
-              {% for item in items_solicitados %}
+              {% for item in items_per_offer %}
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{ item.nombre }}
+                      {{ item }}
                   </th>
+                  {% for key, value in item.1.items %}
+                    <td>
+                      {{value}}
+                    </td>
+                  {% endfor %}
+                </tr>
               {% endfor %}
             </tbody>
         </table>
