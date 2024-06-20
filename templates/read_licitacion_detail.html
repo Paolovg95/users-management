@@ -26,7 +26,7 @@
       <h5 class="text-xl">Owner: <strong>{{ oferta.owner }}</strong></h5>
     </div>
     <div class="relative overflow-x-auto">
-      <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <table class="w-full table-fixed text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
               <th scope="col" class="px-6 py-3">
@@ -54,46 +54,36 @@
   {% endif %}
 
   {% if items_per_offer %}
-    <div class="p-5 border">
-      <div class="relative overflow-x-auto">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+    <div class="p-5">
+      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full table-fixed text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="min-w-10 max-w-20 px-6 py-3">
                   Items solicitados
                 </th>
                 {% for oferta in licitacion.oferta_set.all %}
-                  <th scope="col" class="px-6 py-3">
+                  <th scope="col" class="min-w-96 max-w-96 px-6 py-3">
                     {{ oferta.empresa }}
                   </th>
                 {% endfor %}
-                <th>
-                  Actions
-                </th>
               </tr>
             </thead>
             <tbody>
               {% for item in items_per_offer.items %}
-                <tr x-data="{open: false}">
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <th class="px-6 py-3">
                     {{ item.0 }}
                   </th>
                   {% for key, pricing in item.1.items %}
                     <td class="px-6 py-3">
                       {% if pricing %}
-                        <div>
+                        <div x-data="{open: false}">
                           <button type="button" x-on:click="open = ! open">
-                            <strong>${{ pricing }}</strong>
+                            ${{ pricing }}
                           </button>
                           <div x-show="open" x-transition.duration.300ms>
-                            <label for="item">Marca:</label>
-                            <span>Apple</span><br>
-                            <label for="item2">Modelo:</label>
-                            <span>Macbook Pro</span><br>
-                            <label for="item3">Descripcion:</label>
-                            <textarea id="w3review" name="w3review" rows="3" cols="50">
-                              At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.
-                            </textarea><br>
+                            <span>Woo</span>
                           </div>
                         </div>
                       {% else %}
@@ -101,15 +91,6 @@
                       {% endif %}
                     </td>
                   {% endfor %}
-                  <td>
-                    <button
-                    type="button"
-                    x-on:click="open = ! open"
-                    class="px-3 py-2 text-xs font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-
-                    More Details
-                  </button>
-                  </td>
                 </tr>
 
               {% endfor %}
