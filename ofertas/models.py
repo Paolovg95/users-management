@@ -7,6 +7,7 @@ class Oferta(models.Model):
     licitacion = models.ForeignKey(Licitacion, on_delete=models.CASCADE)
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
     owner = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    total_oferta = models.IntegerField(null=True)
 
 class OfertaItem(models.Model):
     # Modify in Views to Refer only to Items from that Licitacion

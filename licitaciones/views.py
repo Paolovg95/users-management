@@ -47,7 +47,6 @@ def view_licitacion(request, id=None):
                     else:
                         items_per_offer[item.nombre].update({oferta.empresa.nombre:None})
                     # OFERTANTE of OFERTA only
-            print(items_per_offer)
             data['items_per_offer'] = items_per_offer
 
             oferta = licitacion.oferta_set.filter(empresa=user.userprofile.empresa).first()
