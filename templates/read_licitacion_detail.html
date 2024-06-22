@@ -2,7 +2,7 @@
 
 {% block title %}
 {{block.super}}: {{title}}
-{% endblock %}
+{% endblock title %}
 
 {% block content %}
 <div class="m-5">
@@ -52,8 +52,8 @@
       </table>
     </div>
   {% endif %}
-
   {% if items_per_offer %}
+    {{ items_per_offer|json_script:"hello-data" }}
     <div class="p-5">
       <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full table-fixed text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -69,8 +69,8 @@
                 {% endfor %}
               </tr>
             </thead>
-            <tbody>
-              {% for item in items_per_offer.items %}
+            {% for item in items_per_offer.items %}
+              <tbody>
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                   <th class="px-6 py-3">
                     {{ item.0 }}
@@ -78,23 +78,24 @@
                   {% for key, pricing in item.1.items %}
                     <td class="px-6 py-3">
                       {% if pricing %}
-                        <div x-data="{open: false}">
-                          <button type="button" x-on:click="open = ! open">
-                            ${{ pricing }}
-                          </button>
-                          <div x-show="open" x-transition.duration.300ms>
-                            <span>Woo</span>
-                          </div>
-                        </div>
+                        <button class="price-btn" id="{{pricing}}" type="button">
+                          ${{ pricing }}
+                        </button>
                       {% else %}
                         <strong>{{ pricing }}</strong>
                       {% endif %}
                     </td>
                   {% endfor %}
                 </tr>
-
-              {% endfor %}
-            </tbody>
+                <tbody id="{{item.0}}-row" hidden="false">
+                  <tr>
+                    <td>
+                      {% include "partials/product.html" %}
+                    </td>
+                  </tr>
+                </tbody>
+              </tbody>
+            {% endfor %}
         </table>
       </div>
     </div>
