@@ -1,4 +1,4 @@
-const obj = JSON.parse(document.getElementById('hello-data').textContent);
+const obj = JSON.parse(document.getElementById('items-data').textContent);
 for (const [key, value] of Object.entries(obj)) {
   let hiddenRow = document.getElementById(`${key}-row`)
   for (const [ofertante, pricing] of Object.entries(value)) {
