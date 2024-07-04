@@ -46,17 +46,17 @@ def view_licitacion(request, id=None):
                         items_per_offer[item.nombre].update({oferta.empresa.nombre: oferta_item[0]})
                     else:
                         items_per_offer[item.nombre].update({oferta.empresa.nombre:None})
-                    # OFERTANTE of OFERTA only
             data['items_per_offer'] = items_per_offer
-            oferta = licitacion.oferta_set.filter(empresa=user.userprofile.empresa).first()
-            if oferta:
-                data['oferta'] = oferta
-                prices = {}
-                for licitacion_item in items_solicitados:
-                    oferta_item = oferta.ofertaitem_set.filter(licitacion_item=licitacion_item).select_related("licitacion_item")
-                    if oferta_item:
-                        prices[licitacion_item.nombre] = oferta_item[0].price
-                    else:
-                        prices[licitacion_item.nombre] = None
-                data['prices'] = prices
+        # OWNER of OFERTA only
+        oferta = licitacion.oferta_set.filter(empresa=user.userprofile.empresa).first()
+        if oferta:
+            data['oferta'] = oferta
+            prices = {}
+            for licitacion_item in items_solicitados:
+                oferta_item = oferta.ofertaitem_set.filter(licitacion_item=licitacion_item).select_related("licitacion_item")
+                if oferta_item:
+                    prices[licitacion_item.nombre] = oferta_item[0]
+                else:
+                    prices[licitacion_item.nombre] = None
+            data['prices'] = prices
     return render(request, "read_licitacion_detail.html", data)
